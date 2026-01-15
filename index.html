@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comma Chameleon — Writing & Creative Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f0e8; color: #1a1a1a; }
+        .marquee { background: #1a1a1a; color: white; padding: 10px 0; overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 25s linear infinite; font-size: 12px; font-weight: bold; letter-spacing: 2px; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        header { position: sticky; top: 0; z-index: 50; background: #f5f0e8; border-bottom: 4px solid #1a1a1a; padding: 16px 24px; }
+        nav { max-width: 1200px; margin: 0 auto; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { position: relative; width: 56px; height: 56px; background: linear-gradient(135deg, #ff6b35, #ff3366); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 3px solid #1a1a1a; box-shadow: 6px 6px 0 #1a1a1a; transition: all 0.3s; }
+        .logo-icon:hover { box-shadow: 0 0 30px #ff6b35, 6px 6px 0 #1a1a1a; }
+        .logo-icon::after { content: ''; position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; background: #00ff88; border-radius: 50%; border: 2px solid #1a1a1a; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .logo-text { font-size: 28px; font-weight: 900; letter-spacing: -0.04em; }
+        .logo-text span { background: #1a1a1a; color: #ff6b35; padding: 0 8px; margin-left: 8px; }
+        .logo-sub { font-size: 11px; font-weight: 900; letter-spacing: 3px; color: #ff6b35; margin-top: 2px; }
+
+        /* Tab Navigation */
+        .tab-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tab-btn { position: relative; padding: 14px 24px; font-weight: 900; font-size: 12px; letter-spacing: 1px; border: 3px solid #1a1a1a; background: white; cursor: pointer; transition: all 0.2s; text-decoration: none; color: #1a1a1a; box-shadow: 6px 6px 0 #1a1a1a; }
+        .tab-btn:hover { transform: translate(2px, 2px); box-shadow: 4px 4px 0 #1a1a1a, 0 0 20px rgba(255,107,53,0.4); }
+        .tab-btn.active { background: #1a1a1a; color: white; transform: translate(6px, 6px); box-shadow: 0 0 25px rgba(255,107,53,0.6); }
+        .tab-btn .tab-num { font-family: monospace; font-size: 10px; color: #888; margin-right: 8px; }
+        .tab-btn.active .tab-num { color: #ff6b35; }
+        .tab-btn.primary-tab { background: #ff6b35; color: white; }
+        .tab-btn.primary-tab:hover { box-shadow: 4px 4px 0 #1a1a1a, 0 0 30px rgba(255,107,53,0.7); }
+
+        /* Sections */
+        .section { display: none; padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+        .section.active { display: block; }
+        
+        /* Hero */
+        .hero { padding: 100px 24px 80px; position: relative; }
+        .hero-content { max-width: 1200px; margin: 0 auto; }
+        .hero-badge { display: inline-block; background: #00ff88; color: #1a1a1a; padding: 6px 16px; font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px; transform: rotate(-2deg); border: 2px solid #1a1a1a; box-shadow: 4px 4px 0 #1a1a1a; transition: all 0.3s; }
+        .hero-badge:hover { box-shadow: 0 0 20px #00ff88, 4px 4px 0 #1a1a1a; }
+        .hero-title { font-size: clamp(48px, 10vw, 100px); font-weight: 900; line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 24px; }
+        .hero-title .outline { color: transparent; -webkit-text-stroke: 3px #1a1a1a; position: relative; display: inline-block; transition: all 0.3s; }
+        .hero-title .outline::after { content: attr(data-text); position: absolute; left: 5px; top: 5px; color: #ff6b35; -webkit-text-stroke: 0; z-index: -1; transition: all 0.3s; }
+        .hero-title:hover .outline::after { text-shadow: 0 0 40px #ff6b35; }
+        .hero-sub { font-size: 20px; max-width: 550px; color: #555; margin-bottom: 32px; line-height: 1.5; }
+        .hero-sub strong { color: #1a1a1a; }
+        .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        .btn { padding: 16px 32px; font-weight: 900; font-size: 14px; letter-spacing: 1px; border: 4px solid #1a1a1a; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #1a1a1a; color: white; box-shadow: 0 0 30px rgba(255,107,53,0.3); }
+        .btn-primary:hover { background: #ff6b35; box-shadow: 0 0 40px rgba(255,107,53,0.7), 0 0 80px rgba(255,107,53,0.3); }
+        .btn-secondary { background: white; color: #1a1a1a; box-shadow: 5px 5px 0 #1a1a1a; }
+        .btn-secondary:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 #1a1a1a, 0 0 25px rgba(0,255,136,0.5); }
+        .hero-deco { position: absolute; right: 10%; top: 20%; }
+        .hero-deco .circle1 { width: 120px; height: 120px; border: 4px solid #ff6b35; border-radius: 50%; opacity: 0.4; animation: float 6s ease-in-out infinite; }
+        .hero-deco .circle2 { width: 60px; height: 60px; background: #00ff88; border-radius: 50%; border: 3px solid #1a1a1a; position: absolute; top: 80px; left: -30px; animation: float 4s ease-in-out infinite reverse; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* Problem Section */
+        .problem { background: #1a1a1a; color: white; padding: 80px 24px; margin: 0; max-width: 100%; }
+        .problem-inner { max-width: 1200px; margin: 0 auto; }
+        .problem h2 { font-size: 14px; letter-spacing: 3px; color: #ff6b35; margin-bottom: 24px; }
+        .problem p { font-size: 28px; font-weight: 500; line-height: 1.5; max-width: 800px; }
+        .problem p strong { color: #00ff88; text-shadow: 0 0 20px rgba(0,255,136,0.5); }
+
+        /* Services */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
+        .service-card { background: white; border: 4px solid #1a1a1a; padding: 32px; box-shadow: 6px 6px 0 #1a1a1a; transition: all 0.25s; position: relative; }
+        .service-card:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 #1a1a1a, 0 0 30px rgba(255,107,53,0.3); }
+        .service-card.featured { background: #1a1a1a; color: white; box-shadow: 6px 6px 0 #ff6b35; }
+        .service-card.featured:hover { box-shadow: 3px 3px 0 #ff6b35, 0 0 40px rgba(255,107,53,0.5); }
+        .service-num { position: absolute; top: -12px; right: -12px; background: #ff6b35; color: white; padding: 4px 12px; font-family: monospace; font-size: 12px; font-weight: bold; border: 2px solid #1a1a1a; }
+        .service-card.featured .service-num { background: #00ff88; color: #1a1a1a; }
+        .service-icon { font-size: 40px; margin-bottom: 16px; }
+        .icon-dot { display: inline-block; width: 32px; height: 32px; border-radius: 50%; border: 3px solid #1a1a1a; box-shadow: 3px 3px 0 #1a1a1a; transition: all 0.3s; }
+        .service-card:hover .icon-dot { box-shadow: 0 0 20px currentColor, 3px 3px 0 #1a1a1a; }
+        .service-card.featured .icon-dot { border-color: white; box-shadow: 3px 3px 0 #ff6b35; }
+        .service-card h3 { font-size: 20px; font-weight: 900; margin-bottom: 12px; }
+        .service-card p { color: #666; font-size: 14px; line-height: 1.6; }
+        .service-card.featured p { color: #aaa; }
+        .service-tag { display: inline-block; background: #f5f0e8; padding: 4px 10px; font-size: 11px; font-weight: 700; margin-top: 16px; border: 2px solid #1a1a1a; }
+        .service-card.featured .service-tag { background: #ff6b35; color: white; border-color: #ff6b35; }
+        .new-badge { position: absolute; top: -8px; left: 20px; background: #00ff88; color: #1a1a1a; padding: 4px 12px; font-size: 10px; font-weight: 900; letter-spacing: 1px; border: 2px solid #1a1a1a; transform: rotate(-3deg); animation: glow-green 2s ease-in-out infinite; }
+        @keyframes glow-green { 0%, 100% { box-shadow: 0 0 5px #00ff88; } 50% { box-shadow: 0 0 20px #00ff88, 0 0 30px #00ff88; } }
+
+        /* Try It Section */
+        .try-it { background: linear-gradient(135deg, #ff6b35 0%, #ff3366 100%); padding: 80px 24px; margin: 0; max-width: 100%; }
+        .try-it-inner { max-width: 1200px; margin: 0 auto; }
+        .try-it h2 { color: white; font-size: 48px; font-weight: 900; margin-bottom: 16px; text-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        .try-it .subtitle { color: rgba(255,255,255,0.8); font-size: 18px; margin-bottom: 48px; }
+        .prompt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+        .prompt-card { background: white; border: 4px solid #1a1a1a; padding: 24px; cursor: pointer; transition: all 0.25s; }
+        .prompt-card:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255,255,255,0.4); }
+        .prompt-card.active { background: #1a1a1a; color: white; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+        .prompt-card h4 { font-size: 16px; font-weight: 900; margin-bottom: 8px; }
+        .prompt-card p { font-size: 13px; color: #666; }
+        .prompt-card.active p { color: #aaa; }
+        .difficulty { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-top: 12px; padding: 4px 8px; background: #f5f0e8; display: inline-block; border: 2px solid #1a1a1a; }
+        .prompt-card.active .difficulty { background: #ff6b35; color: white; border-color: #ff6b35; box-shadow: 0 0 15px rgba(255,107,53,0.5); }
+
+        .writing-area { margin-top: 32px; background: white; border: 4px solid #1a1a1a; padding: 32px; box-shadow: 8px 8px 0 rgba(0,0,0,0.3); }
+        .writing-area h3 { font-size: 14px; letter-spacing: 2px; color: #ff6b35; margin-bottom: 16px; }
+        .writing-area textarea { width: 100%; height: 200px; border: 3px solid #1a1a1a; padding: 16px; font-family: inherit; font-size: 16px; resize: none; background: #faf8f5; transition: all 0.3s; }
+        .writing-area textarea:focus { outline: none; background: white; box-shadow: 0 0 20px rgba(255,107,53,0.3); }
+        .hint { margin-top: 16px; padding: 16px; background: #f5f0e8; border-left: 4px solid #ff6b35; font-size: 14px; color: #666; }
+
+        /* Doodle Zone */
+        .doodle-section { background: #f5f0e8; padding: 80px 24px; }
+        .doodle-inner { max-width: 1200px; margin: 0 auto; }
+        .toolbar { background: white; border: 4px solid #1a1a1a; padding: 16px; margin-bottom: 16px; box-shadow: 6px 6px 0 #1a1a1a; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+        .toolbar-label { font-weight: 900; font-size: 11px; letter-spacing: 2px; }
+        .color-btn { width: 32px; height: 32px; border: 3px solid transparent; cursor: pointer; transition: all 0.2s; }
+        .color-btn:hover { transform: scale(1.15); box-shadow: 0 0 15px currentColor; }
+        .color-btn.active { border-color: #1a1a1a; transform: scale(1.25) rotate(12deg); box-shadow: 0 0 20px currentColor; }
+        .tool-btn { padding: 8px 16px; font-weight: 900; font-size: 12px; border: 3px solid #1a1a1a; background: white; cursor: pointer; transition: all 0.2s; }
+        .tool-btn:hover { box-shadow: 0 0 15px rgba(255,107,53,0.4); }
+        .tool-btn.active { background: #1a1a1a; color: white; box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        .tool-btn.danger { background: #ff3366; color: white; }
+        .tool-btn.danger:hover { box-shadow: 0 0 20px rgba(255,51,102,0.6); }
+        .stamp-btn { width: 36px; height: 36px; font-size: 18px; border: 3px solid #1a1a1a; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .stamp-btn:hover { transform: scale(1.15); box-shadow: 0 0 15px rgba(255,107,53,0.4); }
+        .stamp-btn.active { border-color: #ff6b35; background: #fff5f0; transform: scale(1.2); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        .canvas-container { border: 4px solid #1a1a1a; background: #faf8f5; transition: all 0.3s; }
+        .canvas-container:hover { box-shadow: 0 0 40px rgba(255,107,53,0.3); }
+        #canvas { width: 100%; height: 400px; cursor: crosshair; display: block; touch-action: none; }
+
+        /* About Section */
+        .work-list { list-style: none; }
+        .work-list li { padding: 16px 20px; border-bottom: 2px solid #eee; font-weight: 700; display: flex; align-items: center; gap: 12px; transition: all 0.25s; }
+        .work-list li:hover { background: #fff5f0; padding-left: 28px; box-shadow: inset 4px 0 0 #ff6b35; }
+        .work-list li::before { content: '→'; color: #ff6b35; font-weight: 900; }
+
+        /* CTA Section */
+        .cta-section { background: #1a1a1a; color: white; padding: 100px 24px; text-align: center; max-width: 100%; margin: 0; }
+        .cta-section h2 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; margin-bottom: 24px; }
+        .cta-section h2 span { color: #ff6b35; text-shadow: 0 0 30px rgba(255,107,53,0.5); }
+        .cta-section p { font-size: 18px; color: #aaa; max-width: 600px; margin: 0 auto 32px; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* Footer */
+        footer { background: #0a0a0a; color: white; padding: 48px 24px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+        footer h3 { font-size: 24px; font-weight: 900; transition: all 0.3s; }
+        footer h3:hover { text-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        footer h3 span { color: #ff6b35; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { color: #888; text-decoration: none; font-size: 14px; transition: all 0.25s; }
+        .footer-links a:hover { color: #ff6b35; text-shadow: 0 0 15px rgba(255,107,53,0.5); }
+
+        @media (max-width: 768px) {
+            .tab-nav { gap: 6px; }
+            .tab-btn { padding: 10px 16px; font-size: 10px; }
+            .hero-deco { display: none; }
+            .about-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="marquee">
+        <div class="marquee-content">
+            WRITING COACHING ✦ PUBLIC SPEAKING ✦ VIDEOGRAPHY ✦ MUSICIANS ✦ EDUCATORS ✦ SPEECH WRITING ✦ BRAND NARRATIVES ✦ REELS & EVENTS ✦ NEURODIVERGENT LEARNING ✦ CREATIVE DIRECTION ✦ WRITING COACHING ✦ PUBLIC SPEAKING ✦ VIDEOGRAPHY ✦ MUSICIANS ✦ EDUCATORS ✦
+        </div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">🦎</div>
+                    <div>
+                        <div class="logo-text">COMMA<span>CHAMELEON</span></div>
+                        <div class="logo-sub">WRITING & CREATIVE STUDIO</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="showSection('home', this)">
+                    <span class="tab-num">01</span>HOME
+                </button>
+                <button class="tab-btn" onclick="showSection('services', this)">
+                    <span class="tab-num">02</span>SERVICES
+                </button>
+                <button class="tab-btn" onclick="showSection('try-it', this)">
+                    <span class="tab-num">03</span>TRY IT
+                </button>
+                <button class="tab-btn" onclick="showSection('studio', this)">
+                    <span class="tab-num">04</span>STUDIO
+                </button>
+                <button class="tab-btn" onclick="showSection('about', this)">
+                    <span class="tab-num">05</span>ABOUT
+                </button>
+                <button class="tab-btn primary-tab" onclick="showSection('book', this)">
+                    <span class="tab-num" style="color: rgba(255,255,255,0.6);">06</span>BOOK SESSION
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HOME Section -->
+    <div id="home" class="section active">
+        <section class="hero" style="padding-top: 40px;">
+            <div class="hero-content">
+                <div class="hero-badge">WORDS THAT HIT DIFFERENT</div>
+                <h1 class="hero-title">
+                    UNSTICK<br>
+                    <span class="outline" data-text="YOUR BRAIN">YOUR BRAIN</span>
+                </h1>
+                <p class="hero-sub">
+                    AI gives you what you ask for. I give you what you <strong>didn't know you needed.</strong> The push. The challenge. The "wait, say that again."
+                </p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary" onclick="showSection('book')">Let's Talk →</a>
+                    <a href="#" class="btn btn-secondary" onclick="showSection('try-it')">Try a Prompt</a>
+                </div>
+            </div>
+            <div class="hero-deco">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+            </div>
+        </section>
+
+        <section class="problem">
+            <div class="problem-inner">
+                <h2>THE REAL PROBLEM</h2>
+                <p>
+                    You're not blocked because you lack talent. You're blocked because <strong>you're too close to see it clearly.</strong> 
+                    Musicians, founders, educators, writers — you all hit the same wall. I'm the person who helps you climb over it.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- SERVICES Section -->
+    <div id="services" class="section">
+        <span style="display: inline-block; background: #ff6b35; color: white; padding: 6px 16px; font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px; box-shadow: 4px 4px 0 #1a1a1a;">WHAT WE BUILD TOGETHER</span>
+        <h2 style="font-size: 48px; font-weight: 900; letter-spacing: -0.03em;">Services</h2>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="service-num">01</span>
+                <div class="service-icon"><span class="icon-dot" style="background: #ff6b35;"></span></div>
+                <h3>Writing Coaching</h3>
+                <p>Kill the blank page. Find the voice that's been hiding under all that overthinking. Essays, posts, passion projects — we make it sound like you, not like everyone else.</p>
+                <span class="service-tag">1:1 SESSIONS</span>
+            </div>
+            <div class="service-card">
+                <span class="service-num">02</span>
+                <div class="service-icon"><span class="icon-dot" style="background: #00ff88;"></span></div>
+                <h3>Public Speaking</h3>
+                <p>That pitch. That wedding toast. That talk you've been avoiding. We'll nail the structure, sharpen the delivery, and kill the nerves. You'll own the room.</p>
+                <span class="service-tag">COACHING</span>
+            </div>
+            <div class="service-card featured">
+                <span class="new-badge">✦ NEW</span>
+                <span class="service-num">03</span>
+                <div class="service-icon"><span class="icon-dot" style="background: linear-gradient(135deg, #ff6b35, #ff3366);"></span></div>
+                <h3>Videography</h3>
+                <p>Reels that stop thumbs. Event capture that feels alive. Music videos that match the energy. I work with artists and creators who want content that actually looks like them.</p>
+                <span class="service-tag">REELS • EVENTS • MUSIC</span>
+            </div>
+            <div class="service-card">
+                <span class="service-num">04</span>
+                <div class="service-icon"><span class="icon-dot" style="background: #ff3366;"></span></div>
+                <h3>Speech & Script Writing</h3>
+                <p>I'll write it for you — or with you. Keynotes, ceremonies, video scripts, investor decks. Words that land hard and stick.</p>
+                <span class="service-tag">DONE FOR YOU</span>
+            </div>
+            <div class="service-card">
+                <span class="service-num">05</span>
+                <div class="service-icon"><span class="icon-dot" style="background: #ffee00;"></span></div>
+                <h3>Brand Narratives</h3>
+                <p>What's your story? Not the LinkedIn version — the real one. I help founders, artists, and educators figure out who they are and why anyone should care.</p>
+                <span class="service-tag">STRATEGY</span>
+            </div>
+            <div class="service-card">
+                <span class="service-num">06</span>
+                <div class="service-icon"><span class="icon-dot" style="background: #00d4ff;"></span></div>
+                <h3>Creative Direction</h3>
+                <p>Building something online? I'll help you figure out what to say, how to say it, and how to not sound like every other account in your feed.</p>
+                <span class="service-tag">ONGOING</span>
+            </div>
+        </div>
+
+        <!-- Musicians callout -->
+        <div style="margin-top: 48px; padding: 40px; background: #1a1a1a; color: white; border: 4px solid #1a1a1a; box-shadow: 8px 8px 0 #ff6b35; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(255,107,53,0.6), 8px 8px 0 #ff6b35'" onmouseout="this.style.boxShadow='8px 8px 0 #ff6b35'">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                <span style="font-size: 40px;">🎸</span>
+                <h3 style="font-size: 28px; font-weight: 900;">FOR MUSICIANS</h3>
+            </div>
+            <p style="font-size: 18px; color: #aaa; max-width: 700px; line-height: 1.6;">
+                Album dropping? Tour coming up? Need a reel that captures the chaos of your live show? I've worked with artists across genres to create content that feels real — not like an ad. Gig capture, promo reels, music video concepts. Let's make something that sounds like <strong style="color: #ff6b35;">you</strong>.
+            </p>
+            <a href="#" onclick="showSection('book')" style="display: inline-block; margin-top: 24px; padding: 14px 28px; background: #ff6b35; color: white; font-weight: 900; font-size: 14px; text-decoration: none; border: 3px solid white; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 0 25px rgba(255,107,53,0.7)'" onmouseout="this.style.boxShadow='none'">LET'S TALK →</a>
+        </div>
+    </div>
+
+    <!-- TRY IT Section -->
+    <div id="try-it" class="section" style="max-width: 100%; padding: 0;">
+        <section class="try-it">
+            <div class="try-it-inner">
+                <h2>TRY IT YOURSELF</h2>
+                <p class="subtitle">Pick a prompt. Write something. Feel the difference.</p>
+                
+                <div class="prompt-grid">
+                    <div class="prompt-card active" onclick="selectPrompt(this, 'Write a letter to yourself 10 years from now. What do you want to tell them?', 'What would you warn yourself about? What would you celebrate?')">
+                        <h4>Letter to Future Self</h4>
+                        <p>10 years from now. What matters?</p>
+                        <span class="difficulty">WARM-UP</span>
+                    </div>
+                    <div class="prompt-card" onclick="selectPrompt(this, 'Write your own eulogy. What do you want people to say about you when you\'re gone?', 'Be honest. Be specific. What legacy matters to you?')">
+                        <h4>Your Eulogy</h4>
+                        <p>What do you want to be remembered for?</p>
+                        <span class="difficulty">DEEP</span>
+                    </div>
+                    <div class="prompt-card" onclick="selectPrompt(this, 'Write a love letter to someone — real or imagined. Don\'t hold back.', 'Raw honesty. What do you actually feel?')">
+                        <h4>Love Letter</h4>
+                        <p>Real or imagined. No filter.</p>
+                        <span class="difficulty">VULNERABLE</span>
+                    </div>
+                    <div class="prompt-card" onclick="selectPrompt(this, 'Write an Instagram caption that sounds like YOU. What would make 1000 strangers stop scrolling?', 'No corporate speak. No clichés. Just you.')">
+                        <h4>Stop the Scroll</h4>
+                        <p>Write the post that makes people pause</p>
+                        <span class="difficulty">PRACTICAL</span>
+                    </div>
+                    <div class="prompt-card" onclick="selectPrompt(this, 'Write a controversial take for X/Twitter. Something you believe but rarely say out loud.', 'What\'s your spicy opinion? Own it.')">
+                        <h4>Hot Take</h4>
+                        <p>Say the thing you usually don't</p>
+                        <span class="difficulty">RISKY</span>
+                    </div>
+                    <div class="prompt-card" onclick="selectPrompt(this, 'You have 60 seconds to introduce yourself on stage. No fluff. Who are you?', 'If you only had a minute, what matters?')">
+                        <h4>60-Second Intro</h4>
+                        <p>You're on stage. Go.</p>
+                        <span class="difficulty">PRACTICAL</span>
+                    </div>
+                </div>
+
+                <div class="writing-area">
+                    <h3 id="promptTitle">CURRENT PROMPT</h3>
+                    <p id="promptText" style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1a1a1a;">Write a letter to yourself 10 years from now. What do you want to tell them?</p>
+                    <textarea id="userWriting" placeholder="Start writing here..."></textarea>
+                    <div class="hint" id="promptHint">💡 <strong>Hint:</strong> What would you warn yourself about? What would you celebrate?</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- STUDIO Section -->
+    <div id="studio" class="section" style="max-width: 100%; padding: 0;">
+        <section class="doodle-section">
+            <div class="doodle-inner">
+                <span style="display: inline-block; background: #ff6b35; color: white; padding: 6px 16px; font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px;">CREATIVE SPACE</span>
+                <h2 style="font-size: 48px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 16px;">
+                    DOODLE <span style="color: transparent; -webkit-text-stroke: 3px #1a1a1a;">ZONE</span>
+                </h2>
+                <p style="color: #666; margin-bottom: 32px; font-size: 18px;">Sometimes the best ideas start with a scribble. Draw. Think. Play. Get out of your head.</p>
+
+                <div class="toolbar">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="toolbar-label">COLOR</span>
+                        <div style="display: flex; gap: 4px;" id="colorPalette">
+                            <button class="color-btn active" style="background: #ff6b35;" onclick="setColor('#ff6b35', this)"></button>
+                            <button class="color-btn" style="background: #1a1a1a;" onclick="setColor('#1a1a1a', this)"></button>
+                            <button class="color-btn" style="background: #ff3366;" onclick="setColor('#ff3366', this)"></button>
+                            <button class="color-btn" style="background: #00ff88;" onclick="setColor('#00ff88', this)"></button>
+                            <button class="color-btn" style="background: #ffee00;" onclick="setColor('#ffee00', this)"></button>
+                            <button class="color-btn" style="background: #00d4ff;" onclick="setColor('#00d4ff', this)"></button>
+                            <button class="color-btn" style="background: #ff00ff;" onclick="setColor('#ff00ff', this)"></button>
+                            <button class="color-btn" style="background: #ffffff; border: 2px solid #1a1a1a;" onclick="setColor('#ffffff', this)"></button>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="toolbar-label">SIZE</span>
+                        <input type="range" id="brushSize" min="1" max="20" value="4" style="width: 80px; accent-color: #ff6b35;">
+                        <span id="sizeValue" style="font-weight: 900; color: #ff6b35;">4</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="tool-btn active" id="brushBtn" onclick="setTool('brush')">BRUSH</button>
+                        <button class="tool-btn" id="eraserBtn" onclick="setTool('eraser')">ERASER</button>
+                        <button class="tool-btn danger" onclick="clearCanvas()">CLEAR</button>
+                    </div>
+                </div>
+
+                <div class="toolbar" style="margin-top: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="toolbar-label">STAMPS</span>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button class="stamp-btn" onclick="setStamp('⭐')">⭐</button>
+                            <button class="stamp-btn" onclick="setStamp('❤️')">❤️</button>
+                            <button class="stamp-btn" onclick="setStamp('✨')">✨</button>
+                            <button class="stamp-btn" onclick="setStamp('🔥')">🔥</button>
+                            <button class="stamp-btn" onclick="setStamp('💡')">💡</button>
+                            <button class="stamp-btn" onclick="setStamp('🎯')">🎯</button>
+                            <button class="stamp-btn" onclick="setStamp('🚀')">🚀</button>
+                            <button class="stamp-btn" onclick="setStamp('💬')">💬</button>
+                            <button class="stamp-btn" onclick="setStamp('🎨')">🎨</button>
+                            <button class="stamp-btn" onclick="setStamp('🎸')">🎸</button>
+                            <button class="stamp-btn" onclick="setStamp('🦎')">🦎</button>
+                            <button class="stamp-btn" onclick="setStamp('🌈')">🌈</button>
+                            <button class="stamp-btn" onclick="setStamp('☀️')">☀️</button>
+                            <button class="stamp-btn" onclick="setStamp('🌙')">🌙</button>
+                            <button class="stamp-btn" onclick="setStamp('⚡')">⚡</button>
+                            <button class="stamp-btn" onclick="setStamp('🦋')">🦋</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-left: 16px;">
+                            <span class="toolbar-label">SIZE</span>
+                            <input type="range" id="stampSize" min="20" max="80" value="40" style="width: 80px; accent-color: #ff6b35;">
+                            <span id="stampSizeValue" style="font-weight: 900; color: #ff6b35;">40</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ABOUT Section -->
+    <div id="about" class="section">
+        <span style="display: inline-block; background: #ff6b35; color: white; padding: 6px 16px; font-size: 11px; font-weight: 900; letter-spacing: 2px; margin-bottom: 24px; box-shadow: 4px 4px 0 #1a1a1a;">THE HUMAN BEHIND THE WORK</span>
+        <h2 style="font-size: 48px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 32px;">
+            Why This<br>
+            <span style="color: transparent; -webkit-text-stroke: 3px #1a1a1a;">Exists</span>
+        </h2>
+        <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+            <div>
+                <p style="font-size: 18px; line-height: 1.8; color: #555; margin-bottom: 24px;">
+                    I've spent years sitting across from people who knew exactly what they wanted to say — they just couldn't get it out. Writers, founders, musicians, teachers. <strong style="color: #1a1a1a;">The wall is always the same.</strong>
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; color: #555; margin-bottom: 24px;">
+                    This isn't about grammar or "content strategy." It's about <strong style="color: #1a1a1a;">clarity</strong>. Cutting through the noise in your own head. Finding the thing that's actually worth saying.
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; color: #555;">
+                    Now I'm bringing that same approach to video. Capturing moments, creating reels, working with artists and educators who want content that feels human — not algorithmic.
+                </p>
+            </div>
+            <div style="background: white; border: 4px solid #1a1a1a; padding: 32px; box-shadow: 8px 8px 0 #1a1a1a; transition: all 0.3s;" onmouseover="this.style.boxShadow='0 0 30px rgba(255,107,53,0.4), 8px 8px 0 #1a1a1a'" onmouseout="this.style.boxShadow='8px 8px 0 #1a1a1a'">
+                <h3 style="font-size: 14px; letter-spacing: 2px; color: #ff6b35; margin-bottom: 24px;">WHO I WORK WITH</h3>
+                <ul class="work-list">
+                    <li>Musicians & Artists</li>
+                    <li>Founders & Startups</li>
+                    <li>Writers & Creators</li>
+                    <li>Educators & Trainers</li>
+                    <li>Neurodivergent Schools & Programs</li>
+                    <li>Speakers & Coaches</li>
+                    <li>Anyone with a story stuck inside</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOK Section -->
+    <div id="book" class="section" style="max-width: 100%; padding: 0;">
+        <section class="cta-section">
+            <p style="font-size: 14px; letter-spacing: 3px; color: #ff6b35; margin-bottom: 16px;">YOU NEED</p>
+            <h2 style="font-size: clamp(40px, 8vw, 80px); font-weight: 900; margin-bottom: 32px; line-height: 0.95; letter-spacing: -0.04em;">
+                SOMEONE TO<br>
+                <span style="color: transparent; -webkit-text-stroke: 3px white; position: relative; display: inline-block;">
+                    BOUNCE OFF
+                    <span style="position: absolute; left: 4px; top: 4px; color: #ff6b35; -webkit-text-stroke: 0; z-index: -1;">BOUNCE OFF</span>
+                </span>
+            </h2>
+            <p style="font-size: 18px; color: #aaa; max-width: 600px; margin: 0 auto 32px;">One session, ongoing coaching, or a full video project — whatever you need. The first call is free. No pitch, just conversation.</p>
+            <div class="cta-buttons">
+                <a href="mailto:hello@commachameleon.com" class="btn btn-primary">Book a Free Call →</a>
+                <a href="#" class="btn btn-secondary" onclick="showSection('services')" style="background: transparent; color: white; border-color: white;">View Services</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>COMMA <span>CHAMELEON</span></h3>
+            <div class="footer-links">
+                <a href="#" onclick="showSection('services')">Services</a>
+                <a href="#" onclick="showSection('try-it')">Try It</a>
+                <a href="#" onclick="showSection('studio')">Studio</a>
+                <a href="#" onclick="showSection('about')">About</a>
+                <a href="mailto:hello@commachameleon.com">Contact</a>
+            </div>
+            <p style="color: #666; font-size: 12px;">© 2025 Comma Chameleon. Words that hit different.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentColor = '#ff6b35';
+        let currentTool = 'brush';
+        let currentStamp = null;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function showSection(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if (btn) btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (id === 'studio') {
+                setTimeout(initCanvas, 100);
+            }
+        }
+
+        function selectPrompt(el, text, hint) {
+            document.querySelectorAll('.prompt-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('promptText').textContent = text;
+            document.getElementById('promptHint').innerHTML = '💡 <strong>Hint:</strong> ' + hint;
+        }
+
+        function setColor(color, btn) {
+            currentColor = color;
+            currentTool = 'brush';
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('brushBtn').classList.add('active');
+            document.getElementById('eraserBtn').classList.remove('active');
+        }
+
+        function setTool(tool) {
+            currentTool = tool;
+            currentStamp = null;
+            document.getElementById('brushBtn').classList.toggle('active', tool === 'brush');
+            document.getElementById('eraserBtn').classList.toggle('active', tool === 'eraser');
+            document.querySelectorAll('.stamp-btn').forEach(b => b.classList.remove('active'));
+        }
+
+        function setStamp(emoji) {
+            currentTool = 'stamp';
+            currentStamp = emoji;
+            document.getElementById('brushBtn').classList.remove('active');
+            document.getElementById('eraserBtn').classList.remove('active');
+            document.querySelectorAll('.stamp-btn').forEach(b => {
+                b.classList.toggle('active', b.textContent === emoji);
+            });
+        }
+
+        function initCanvas() {
+            const canvas = document.getElementById('canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 400;
+            ctx.fillStyle = '#faf8f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function clearCanvas() {
+            const canvas = document.getElementById('canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#faf8f5';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const sizeSlider = document.getElementById('brushSize');
+            const sizeValue = document.getElementById('sizeValue');
+            const stampSizeSlider = document.getElementById('stampSize');
+            const stampSizeValue = document.getElementById('stampSizeValue');
+
+            sizeSlider.addEventListener('input', function() {
+                sizeValue.textContent = this.value;
+            });
+
+            stampSizeSlider.addEventListener('input', function() {
+                stampSizeValue.textContent = this.value;
+            });
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                return { x, y };
+            }
+
+            function placeStamp(e) {
+                if (currentTool !== 'stamp' || !currentStamp) return;
+                const ctx = canvas.getContext('2d');
+                const pos = getPos(e);
+                const size = parseInt(stampSizeSlider.value);
+                ctx.font = size + 'px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(currentStamp, pos.x, pos.y);
+            }
+
+            function startDraw(e) {
+                if (currentTool === 'stamp') {
+                    placeStamp(e);
+                    return;
+                }
+                isDrawing = true;
+                const pos = getPos(e);
+                lastX = pos.x;
+                lastY = pos.y;
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const ctx = canvas.getContext('2d');
+                const pos = getPos(e);
+                const size = parseInt(sizeSlider.value);
+
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.strokeStyle = currentTool === 'eraser' ? '#faf8f5' : currentColor;
+                ctx.lineWidth = currentTool === 'eraser' ? size * 3 : size;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+
+                lastX = pos.x;
+                lastY = pos.y;
+            }
+
+            function stopDraw() {
+                isDrawing = false;
+            }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+            canvas.addEventListener('touchstart', startDraw);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stopDraw);
+        });
+    </script>
+</body>
+</html>
